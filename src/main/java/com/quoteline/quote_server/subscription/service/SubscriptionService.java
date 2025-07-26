@@ -5,6 +5,7 @@ import com.quoteline.quote_server.subscription.dto.SubscriptionRequest;
 import com.quoteline.quote_server.subscription.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +20,10 @@ public class SubscriptionService {
                 .timeSegment(request.getTimeSegment())
                 .build();
         return subscriptionRepository.save(subscription);
+    }
+
+    @Transactional
+    public void deleteSubscription(String email) {
+        subscriptionRepository.deleteByEmail(email);
     }
 }
