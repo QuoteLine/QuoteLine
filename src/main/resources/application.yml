@@ -3,9 +3,9 @@ spring:
     name: quote-server
 
   datasource:
-    url: jdbc:mysql://localhost:3306/quoteline
-    username: root
-    password: 1234
+    url: jdbc:mysql://localhost:3306/mysql
+    username: username
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
