@@ -18,7 +18,7 @@ public class DailyNotificationScheduler {
     private final QuoteService quoteService;
     private final NotificationProducer producer;
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 6 * * *")
     public void sendMorningQuotes() {
         send(TimeSegment.AM);
     }
