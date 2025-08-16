@@ -31,6 +31,7 @@ public class KafkaConfig {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true); // 재시도 시 중복 발송을 막기 위한 프로듀서 멱등성
         return new DefaultKafkaProducerFactory<>(props);
     }
 
@@ -49,7 +50,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EmailPayload> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, EmailPayload> kafkaListenerContainerFactory(KafkaTemplate<String, EmailPayload> template) {
         ConcurrentKafkaListenerContainerFactory<String, EmailPayload> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
