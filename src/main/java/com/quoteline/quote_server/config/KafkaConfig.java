@@ -2,6 +2,7 @@ package com.quoteline.quote_server.config;
 import com.quoteline.quote_server.notification.domain.EmailPayload;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,11 +57,20 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, EmailPayload> kafkaListenerContainerFactory(KafkaTemplate<String, EmailPayload> template) {
         ConcurrentKafkaListenerContainerFactory<String, EmailPayload> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(template,
+                (r, e) -> new TopicPartition(topicName + ".DLT", r.partition()));
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(recoverer, new FixedBackOff(1000L, 2));
+        factory.setCommonErrorHandler(errorHandler);
         return factory;
     }
 
     @Bean
     public NewTopic emailTopic() {
         return new NewTopic(topicName, 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic emailTopicDlt() {
+        return new NewTopic(topicName + ".DLT", 1, (short) 1);
     }
 }
