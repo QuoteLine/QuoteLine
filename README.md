@@ -1,8 +1,6 @@
 ## Just Do
 삶이 불안해? 그럼, 그냥 해!
 
-동기부여 웹 서비스, 그냥 해
-
 ## Stack
 - BE: SpringBoot
 - DB: MySQL, MongoDB, Redis
@@ -11,3 +9,4 @@
 - Obs: Prometheus, Grafana
 - AI-CodeReview: CodeRabbit
 - AI Agent: Codex
+- CI/CD: Github Actions, Jenkins, ArgoCD
