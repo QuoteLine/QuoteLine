@@ -1,18 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: quoteline
+  name: quoteline-dev
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/1stev/QuoteLine.git
-    targetRevision: HEAD
+    targetRevision: main
     path: k8s
-  desination:
+  destination:
     server: https://kubernetes.default.svc
-    namespace: quoteline
+    namespace: quoteline-dev1
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
