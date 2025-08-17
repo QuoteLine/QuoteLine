@@ -3,6 +3,8 @@ name: PR CI
 on:
   pull_request:
     branches: [ main, develop, feat/** ]
+  push:
+    branches: [ main ]
 
 jobs:
   build:
