@@ -14,15 +14,15 @@ spec:
     metadata:
       labels:
         app: quote-server
-      spec:
-        imagePullSecrets:
-          - name: ghcr-pull-secret
-        containers:
-          - name: quote-server
-            image: ghcr.io/quoteline/quoteline:latest
-            imagePullPolicy: Always
-            ports:
-              - containerPort: 8080
-            env:
-              - name: SPRING_PROFILES_ACTIVE
-                value: "dev"
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: quote-server
+          image: ghcr.io/quoteline/quoteline:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
