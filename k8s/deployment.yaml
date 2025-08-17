@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: quote-server
   namespace: quoteline-dev
-  labels:
-    app: quote-server
 spec:
   replicas: 1
   selector:
