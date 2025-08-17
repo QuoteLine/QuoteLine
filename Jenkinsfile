@@ -47,8 +47,8 @@ pipeline {
     }
 
     stage('Docker Push') {
-			// main 브랜치에만 푸시하고 싶으면 아래 when 유지
-      when { branch 'main' }
+      //when { branch 'main' }
+      environment { GH_PAT = credentials('github-token') }
       steps {
 				// GHCR 로그인 후 푸시
         sh 'echo ${REGISTRY_CREDENTIALS_PSW} | docker login ${REGISTRY} -u ${REGISTRY_CREDENTIALS_USR} --password-stdin'
