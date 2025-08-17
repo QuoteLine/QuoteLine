@@ -1,13 +1,19 @@
 package com.quoteline.quote_server.notification.domain;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class EmailPayload {
-    private String email;
-    private String quote;
+    private final String idempotencyKey;
+    private final String email;
+    private final String quote;
+
+    @JsonCreator
+    public EmailPayload(@JsonProperty("idempotencyKey") String idempotencyKey, @JsonProperty("email") String email, @JsonProperty("quote") String quote) {
+        this.idempotencyKey = idempotencyKey;
+        this.email = email;
+        this.quote = quote;
+    }
 }
