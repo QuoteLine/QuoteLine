@@ -1,0 +1,57 @@
+package com.quoteline.quote_server.board.controller;
+
+import com.quoteline.quote_server.board.domain.Board;
+import com.quoteline.quote_server.board.dto.BoardRequest;
+import com.quoteline.quote_server.board.dto.BoardResponse;
+import com.quoteline.quote_server.board.service.BoardService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/boards")
+@RequiredArgsConstructor
+public class BoardController {
+    private final BoardService boardService;
+
+    // 게시글 생성
+    @PostMapping
+    public ResponseEntity<BoardResponse> createBoard(@RequestBody BoardRequest request) {
+        Board board = boardService.createBoard(request);
+        return ResponseEntity.ok(BoardResponse.from(board));
+    }
+
+    // 단일 게시글 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<BoardResponse> getBoard(@PathVariable Long id) {
+        Board board = boardService.getBoard(id);
+        return ResponseEntity.ok(BoardResponse.from(board));
+    }
+
+    // 전체 게시글 조회
+    @GetMapping
+    public ResponseEntity<List<BoardResponse>> getAllBoards() {
+        List<Board> boards = boardService.getAllBoards();
+        List<BoardResponse> response = boards.stream().map(BoardResponse::from).collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    // 게시글 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<BoardResponse> updateBoard(
+            @PathVariable Long id, @RequestBody BoardRequest request
+    ) {
+        Board updateBoard = boardService.updateBoard(id, request);
+        return ResponseEntity.ok(BoardResponse.from(updateBoard));
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+        boardService.deleteBoard(id);
+        return ResponseEntity.noContent().build();
+    }
+}
