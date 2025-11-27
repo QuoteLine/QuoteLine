@@ -3,6 +3,8 @@ package com.quoteline.quote_server.board.service;
 import com.quoteline.quote_server.board.domain.Board;
 import com.quoteline.quote_server.board.dto.BoardRequest;
 import com.quoteline.quote_server.board.repository.BoardRepository;
+import com.quoteline.quote_server.exception.ErrorCode;
+import com.quoteline.quote_server.exception.QuoteLineException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class BoardService {
     }
 
     public Board getBoard(Long id) {
-        return boardRepository.findById(id).orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
+        return boardRepository.findById(id).orElseThrow(() -> new QuoteLineException(ErrorCode.BOARD_NOT_FOUND, String.format("게시물 ID: %d", id)));
     }
 
     public List<Board> getAllBoards() {
