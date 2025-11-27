@@ -38,8 +38,7 @@ public class BoardController {
     @GetMapping
     public ResponseEntity<List<BoardResponse>> getAllBoards() {
         List<Board> boards = boardService.getAllBoards();
-        List<BoardResponse> response = boards.stream().map(BoardResponse::from).collect(Collectors.toList());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(BoardResponse.from(boards));
     }
 
     // 게시글 수정

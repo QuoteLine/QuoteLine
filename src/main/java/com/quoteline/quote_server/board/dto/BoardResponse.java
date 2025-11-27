@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,5 +26,11 @@ public class BoardResponse {
                 board.getContent(),
                 board.getAuthor()
         );
+    }
+
+    public static List<BoardResponse> from(List<Board> boards) {
+        return boards.stream()
+                .map(BoardResponse::from)
+                .collect(Collectors.toList());
     }
 }
