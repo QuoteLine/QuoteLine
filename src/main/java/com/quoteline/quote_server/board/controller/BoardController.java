@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,8 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<BoardResponse> createBoard(@RequestBody BoardRequest request) {
         Board board = boardService.createBoard(request);
-        return ResponseEntity.ok(BoardResponse.from(board));
+        URI location = URI.create("/boards/" + board.getId());
+        return ResponseEntity.created(location).body(BoardResponse.from(board));
     }
 
     // 단일 게시글 조회
