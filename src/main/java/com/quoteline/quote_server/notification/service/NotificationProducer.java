@@ -15,6 +15,6 @@ public class NotificationProducer {
     private String topic;
 
     public void send(EmailPayload payload) {
-        kafkaTemplate.send(topic, payload.getEmail(), payload);
+        kafkaTemplate.send(topic, payload.getIdempotencyKey(), payload);
     }
 }
