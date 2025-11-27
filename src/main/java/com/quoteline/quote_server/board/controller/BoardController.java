@@ -4,6 +4,7 @@ import com.quoteline.quote_server.board.domain.Board;
 import com.quoteline.quote_server.board.dto.BoardRequest;
 import com.quoteline.quote_server.board.dto.BoardResponse;
 import com.quoteline.quote_server.board.service.BoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class BoardController {
 
     // 게시글 생성
     @PostMapping
-    public ResponseEntity<BoardResponse> createBoard(@RequestBody BoardRequest request) {
+    public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardRequest request) {
         Board board = boardService.createBoard(request);
         URI location = URI.create("/boards/" + board.getId());
         return ResponseEntity.created(location).body(BoardResponse.from(board));
@@ -44,7 +45,7 @@ public class BoardController {
     // 게시글 수정
     @PutMapping("/{id}")
     public ResponseEntity<BoardResponse> updateBoard(
-            @PathVariable Long id, @RequestBody BoardRequest request
+            @PathVariable Long id, @Valid @RequestBody BoardRequest request
     ) {
         Board updateBoard = boardService.updateBoard(id, request);
         return ResponseEntity.ok(BoardResponse.from(updateBoard));
